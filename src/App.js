@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <p>
           Article 35
         </p>
+        <EmojiPeopleIcon/>
       </header>
     </div>
   );
