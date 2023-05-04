@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import {Paper, Tabs, Tab, Typography, Box, } from '@mui/material';
-import Login from '../Components/Login';
+import {Paper, Tabs, Tab, Typography, Box, CssBaseline, } from '@mui/material';
 import Signup from '../Components/Signup';
-const SignInOutContainer=()=>{
+import Signin from '../Components/Signin';
+
+
+const Login=()=>{
 const [value,setValue]=useState(0)
 const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -30,6 +32,8 @@ const handleChange = (event, newValue) => {
   }
   
     return (
+      <>
+        <CssBaseline/>
         <Paper elevation={20} style={paperStyle}>
         <Tabs
           value={value}
@@ -43,14 +47,14 @@ const handleChange = (event, newValue) => {
           <Tab label="Sign Up" />
         </Tabs>
         <TabPanel value={value} index={0}>
-       <Login handleChange={handleChange}/>
+       <Signin handleChange={handleChange}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
       <Signup/>
       </TabPanel>
       </Paper>
-      
+    </>
     )
 }
 
-export default SignInOutContainer;
+export default Login;

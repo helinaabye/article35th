@@ -1,20 +1,17 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Container from '@mui/material/Container';
 import { Link, Grid } from '@mui/material';
+import { NavLink as RouterLink } from 'react-router-dom';
 
 const Footer = (props) => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const pages = ['About', 'SheLeads', 'Blog'];
+    const resource = ['About', 'SheLeads', 'Blog'];
+    const partners = ['AWIB', 'EBR', 'Nalafem'];
+    const connect = ['LinkedIn', 'Twitter', 'NewsLetter'];
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -30,9 +27,9 @@ const Footer = (props) => {
         
       <Container sx={{ display: 'flex', justifyContent: 'space-between'}}>
       <Toolbar disableGutters sx={{ width: '100%' }}>
-      <Grid container item xs={3} sx={{ display: 'flex', justifyContent: 'space-between'}}>
+      <Grid container item xs={3} sx={{ display: {xs: 'none', md:'flex'}, justifyContent: 'space-between'}}>
         
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex', color: 'white' }, mr: 1 }} />
+          <AdbIcon sx={{ display: { xs: 'flex', color: 'white' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -40,7 +37,7 @@ const Footer = (props) => {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: 'none', md:'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
@@ -50,98 +47,80 @@ const Footer = (props) => {
           >
             Article 35th
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
           </Grid>
-          <Grid container sx={{ display: 'flex', justifyContent: 'space-between'}}>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
-            {pages.map((page) => (
-              <Link
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ m: 1, pl: 10, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Link>
-            ))}
-          </Box>
+          <Grid container sx={{ display: { xs: 'flex', md: 'flex'}, justifyContent: 'space-between', m:2, p: 1}}>
+            <Grid item container xs={4} spacing={2} direction='column'>
+              <Grid item>
+              <Typography 
+                  variant="h6"
+                  noWrap
+                  sx={{
+                    fontWeight: 700,
+                    color: 'white',
+                    textDecoration: 'none'
+                  }}>
+                    Resources
+                  </Typography>
+              </Grid>
+              <Grid item>
+                <Link component={RouterLink} className='nav' rel="noopener" to={'./About'} color='white' underline="hover">About</Link>
+              </Grid>
+              <Grid item>
+                <Link component={RouterLink} className='nav' rel="noopener" to={'./Projects'} color='white' underline="hover">Projects</Link>
+              </Grid>
+              <Grid item>
+                <Link component={RouterLink} className='nav' rel="noopener" to={'./Blogs'} color='white' underline="hover">Blogs</Link>
+              </Grid>
+          </Grid>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
-            {pages.map((page) => (
-              <Link
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ m: 1, pl: 10, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Link>
-            ))}
-          </Box>
+          <Grid item container xs={4} spacing={2} direction='column'>
+              <Grid item>
+              <Typography 
+                  variant="h6"
+                  noWrap
+                  sx={{
+                    fontWeight: 700,
+                    color: 'white',
+                    textDecoration: 'none'
+                  }}>
+                    Partners
+                  </Typography>
+              </Grid>
+              <Grid item>
+                <Link href={'https://awibethiopia.org/'} color='white' underline="hover">AWIB</Link>
+              </Grid>
+              <Grid item>
+                <Link href={'https://ethiopianbusinessreview.net/2019/04/'} color='white' underline="hover">EBR</Link>
+              </Grid>
+              <Grid item>
+                <Link href={'https://nalafem.org/who-we-are/'} color='white' underline="hover">Nalafem</Link>
+              </Grid>
+          </Grid>
           
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', flexDirection: 'column' } }}>
-            {pages.map((page) => (
-              <Link
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ m: 1, pl: 10, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Link>
-            ))}
-          </Box>
+          <Grid item container xs={4} spacing={2} direction='column'>
+              <Grid item>
+              <Typography 
+                  variant="h6"
+                  noWrap
+                  sx={{
+                    fontWeight: 700,
+                    color: 'white',
+                    textDecoration: 'none'
+                  }}>
+                    Connect
+                  </Typography>
+              </Grid>
+              <Grid item>
+                <Link href={'https://linkedin.com/'} color='white' underline="hover">LinkedIn</Link>
+              </Grid>
+              <Grid item>
+                <Link href={'https://twitter.com'} color='white' underline="hover">Twitter</Link>
+              </Grid>
+              <Grid item>
+                <Link href='#' color='white' underline="hover">NewsLetter</Link>
+              </Grid>
+          </Grid>
+
           </Grid>
         </Toolbar>  
         </Container>

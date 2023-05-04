@@ -1,45 +1,49 @@
-import * as React from 'react';
+import React, { useEffect, useContext, useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { Link } from 'react-router-dom';
+import { NavLink as RouterLink, useNavigate } from 'react-router-dom';
+import { Link, Grid, MenuItem, Menu, Tooltip, IconButton, Avatar } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { AuthContext } from '../contexts/authContext';
+import TemporaryDrawer from './Sidebar'
 
-const pages = ['About', 'SheLeads', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-function Header() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+function Header() {  
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const { auth } = useContext(AuthContext);
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
 
   return (
+    <>
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AdbIcon sx={{ display: { xs: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -47,7 +51,7 @@ function Header() {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: 'flex'},
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
@@ -57,81 +61,68 @@ function Header() {
           >
             Article 35th
           </Typography>
+          <Box sx={{ flexGrow: 1, display: {  xs: 'none', md: 'flex', justifyContent: 'flex-end' } }}>
+              <Grid container spacing={2} sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}} >
+                <Grid item>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./'} color='white' underline="hover">Home</Link>
+                </Grid>
+                <Grid item>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./About'} color='white' underline="hover">About</Link>
+                </Grid>
+                <Grid item>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./Projects'} color='white' underline="hover">Projects</Link>
+                </Grid>
+                <Grid item>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./Events'} color='white' underline="hover">Events</Link>
+                </Grid>
+                <Grid item>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./Blogs'} color='white' underline="hover">Blogs</Link>
+                </Grid>
+                <Grid item>
+                  {
+                    auth.user && auth.user.id ? (
+                      <IconButton
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        color="inherit"
+                        onClick={() => navigate('/Profile')}
+                      >
+                        <Avatar alt={auth.user.first_name} src={`https://www.gizachew-bayness.tech/api/images/user/${auth.user.id}`} />
+                      </IconButton>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                   <Link to ={'/${page}'}>{page}</Link>
-                    
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent: 'flex-end' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                <Link to ={'/${page}'}>{page}</Link>
-              </Button>
-            ))}
+                    ) : (
+                      <Link component={RouterLink} className='nav' rel="noopener" to={'./Login'} color='white' underline="hover">Login</Link>
+                    )
+                  }
+                </Grid>
+                {/* <Grid item>
+                {
+                  auth.user && auth.user.id ? (
+                    <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    sx={{ mr: 2 }}
+                    onClick={toggleDrawer("right", true)}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+
+                  ):(
+                    <Link component={RouterLink} className='nav' rel="noopener" to={'./Login'} color='white' underline="hover">Login</Link>
+                  )
+                }
+                </Grid> */}
+              </Grid>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+          <Box sx={{ display: { xs: 'flex', md: 'none',  justifyContent: 'flex-end' }, flexGrow: 1 }}>
+            <Tooltip title="Menu">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <MenuIcon sx={{ color: 'white' }}/>
+                <MenuIcon sx={{ color: 'white'}} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -150,16 +141,46 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={'Home'} onClick={handleCloseUserMenu}>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./'} color='purple' underline="hover">Home</Link>
                 </MenuItem>
-              ))}
+                <MenuItem key={'About'} onClick={handleCloseUserMenu}>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./About'} color='purple' underline="hover">About</Link>
+                </MenuItem>
+                <MenuItem key={'Projects'} onClick={handleCloseUserMenu}>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./Projects'} color='purple' underline="hover">Projects</Link>
+                </MenuItem>
+                <MenuItem key={'Events'} onClick={handleCloseUserMenu}>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./Events'} color='purple' underline="hover">Events</Link>
+                </MenuItem>
+                <MenuItem key={'Blogs'} onClick={handleCloseUserMenu}>
+                  <Link component={RouterLink} className='nav' rel="noopener" to={'./Blogs'} color='purple' underline="hover">Blogs</Link>
+                </MenuItem>
+                <MenuItem key={'Login'} onClick={handleCloseUserMenu}>
+                  {
+                    auth.user && auth.user.id ? (
+                      <IconButton
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        color="inherit"
+                        
+                      >
+                        <Avatar alt={auth.user.first_name} src={`https://www.gizachew-bayness.tech/api/images/user/${auth.user.id}`} />
+                      </IconButton>
+                    ) : (
+                      <Link component={RouterLink} className='nav' rel="noopener" to={'./Login'} color='purple' underline="hover">Login</Link>
+                    )
+                  }
+                </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
+    <TemporaryDrawer state={state} setState={setState} toggleDrawer={toggleDrawer} ></TemporaryDrawer>
+    </>
   );
 }
 export default Header;
